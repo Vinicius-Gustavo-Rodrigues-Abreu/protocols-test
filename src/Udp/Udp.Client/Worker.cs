@@ -2,15 +2,15 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 
-namespace Udp.Workers;
+namespace Udp.Client;
 
-public class ClientWorker(ILogger<ClientWorker> logger) : BackgroundService
+public class Worker(ILogger<Worker> logger, IConfiguration configuration) : BackgroundService
 {
-    private readonly ILogger<ClientWorker> _logger = logger;
+    private readonly ILogger<Worker> _logger = logger;
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        var endpoint = IPEndPoint.Parse("172.21.148.229:8080");
+        var endpoint = IPEndPoint.Parse(configuration["AddressToConnect"]!);
 
         using var socket = new Socket(
             AddressFamily.InterNetwork,
